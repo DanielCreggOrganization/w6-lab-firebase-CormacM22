@@ -2,6 +2,8 @@
 <ion-content>
   <form [formGroup]="userAuthForm">
     <!-- existing form fields -->
+    <ion-button (click)="handleAuthentication()">Login</ion-button>
     <ion-button (click)="resetPassword()">Reset Password</ion-button>
+    <ion-button (click)="handleRegistration()">Create Account</ion-button>
   </form>
 </ion-content>
