@@ -1,3 +1,8 @@
+// src/app/services/auth.service.ts
+/**
+ * Service responsible for handling authentication operations
+ * including user registration, authentication, password reset, and sign out.
+ */
 import { Injectable, inject } from '@angular/core';
 import {
   Auth,
@@ -8,6 +13,7 @@ import {
   User,
   UserCredential,
 } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 /**
  * Interface for authentication request data
@@ -37,6 +43,12 @@ export class AuthService {
       userAuthData.email,
       userAuthData.password
     );
+  }
+
+  constructor(private afAuth: AngularFireAuth) {}
+
+  sendPasswordResetEmail(email: string): Promise<void> {
+    return this.afAuth.sendPasswordResetEmail(email);
   }
 
   /**

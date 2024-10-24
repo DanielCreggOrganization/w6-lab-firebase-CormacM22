@@ -1,3 +1,8 @@
+// src/app/login/login.page.ts
+/**
+ * LoginPage handles user authentication including login, registration,
+ * and password reset functionality.
+ */
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -87,7 +92,42 @@ export class LoginPage {
   /**
    * Initiates password reset process
    */
- 
+  async resetPassword() {
+    const email = this.userAuthForm.get('email')?.value;
+    if (!email) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Please enter your email address.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Sending password reset email...',
+    });
+    await loading.present();
+
+    try {
+      await this.authService.sendPasswordResetEmail(email);
+      await loading.dismiss();
+      const alert = await this.alertController.create({
+        header: 'Success',
+        message: 'Password reset email sent. Please check your inbox.',
+        buttons: ['OK']
+      });
+      await alert.present();
+    } catch (error) {
+      await loading.dismiss();
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Failed to send password reset email. Please try again.',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+  }
 
   /**
    * Displays an alert with the given header and message
